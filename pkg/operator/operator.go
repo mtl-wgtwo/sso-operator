@@ -109,6 +109,10 @@ func (h *Handler) Handle(ctx context.Context, event sdk.Event) error {
 			}
 		}
 
+		// Override Ingress name if specified in spec
+		if sso.Spec.UpstreamIngress != "" {
+			proxyResources.AppName = sso.Spec.UpstreamIngress
+		}
 		// Update in dex the redirect URL of the OIDC client
 		ingressHosts, err := kubernetes.FindIngressHosts(proxyResources.AppName, sso.GetNamespace())
 		if err != nil {

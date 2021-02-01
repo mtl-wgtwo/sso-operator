@@ -28,6 +28,8 @@ type SSOSpec struct {
 	OIDCIssuerURL string `json:"oidcIssuerUrl,omitempty"`
 	// Name of the upstream service for which the SSO is created
 	UpstreamService string `json:"upstreamService,omitempty"`
+	// Name of the upstream ingress for which the SSO is created, optional
+	UpstreamIngress string `json:"upstreamIngress,omitempty"`
 	// Domain name under which the SSO service will be exposed
 	Domain string `json:"domain,omitempty"`
 	// cert-manager issuer name

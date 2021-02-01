@@ -158,3 +158,17 @@ spec:
 
   ...
 ```
+
+If your Ingress has a different name than your service name, you can specify the ingressName like this:
+```yaml
+cat <<EOF | kubectl create -f -
+apiVersion: "jenkins.io/v1"
+kind: "SSO"
+metadata:
+  name: "sso-golang-http"
+  namespace: jx-staging
+spec:
+  upstreamIngress: "myIngressName"
+
+  ...
+```
