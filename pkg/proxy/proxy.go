@@ -20,6 +20,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	k8slabels "k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/util/intstr"
+	"github.com/hashicorp/go-version"
 )
 
 const (
@@ -412,11 +413,22 @@ func proxyConfig(sso *apiv1.SSO, client *api.Client, cookieSecret string) (strin
 		},
 	}
 
-	config, err := renderConfig(c)
+	config, err := renderConfig(c, isOldConfigVersion(sso.Spec.ProxyImageTag))
 	if err != nil {
 		return "", errors.Wrap(err, "rendering oauth2_proxy config")
 	}
 	return config, nil
+}
+
+func isOldConfigVersion(proxyVersion string) bool {
+	nPVersion, _ := version.NewVersion(strings.TrimPrefix(proxyVersion, "v"))
+	v6, _ := version.NewVersion("6.0.0")
+
+	if nPVersion.LessThan(v6) {
+		return true
+	}
+
+	return false
 }
 
 func updateProxySecret(secret *v1.Secret, sso *apiv1.SSO, client *api.Client, cookieSecret string) error {

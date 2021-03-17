@@ -28,7 +28,7 @@ func TestProxyConfig(t *testing.T) {
 		},
 	}
 
-	strConfig, err := renderConfig(config)
+	strConfig, err := renderConfig(config, true)
 
 	assert.NoError(t, err, "should render proxy config without error")
 	assert.NotEmpty(t, strConfig, "proxy config should not be empty")
